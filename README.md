@@ -14,7 +14,7 @@ CHIRIMENチュートリアル受講者を想定し、作法をなるべくそれ
 
 ![構成図](imgs/relay.png "構成図")
 
-上の構成図でSocketService.jsの役割を示します。
+上の構成図でRelayServer.jsの役割を示します。
 
 - サービスごとの仕様の差異を吸収し、一つのAPIで利用可能にする
 - CHIRIMEN教材のためのデバイス間連携に用途を絞り、APIを簡略化する
@@ -102,7 +102,7 @@ Achexでは任意の文字列が指定できます。特にサービスへのア
 
 #### WebSocket .IN
 
-WebSocket.INでは、SocketService.jsにおけるServiceTokenのことを、API Keyと呼んでいます。
+WebSocket.INでは、RelayServer.jsにおけるServiceTokenのことを、API Keyと呼んでいます。
 
 API Keyの取得
 
@@ -112,13 +112,13 @@ API Keyの取得
   - API Key(ServiceToken)は〇にiのアイコンを押すと出現する**60文字ぐらいのランダムな文字列**です。
   - API Ket Settings(ギヤのアイコン)で、ドメインを登録すると、そのドメインのコンテンツのみからのアクセスだけを許可することができ、少しセキュリティを高められます。
 
-*Note: WebSocket.INで、チャンネル名は数値のみ許されます。そこでSocketService.jsでは任意の文字列をCRC16を用いて数値に変換することで差異を吸収しています。*
+*Note: WebSocket.INで、チャンネル名は数値のみ許されます。そこでRelayServer.jsでは任意の文字列をCRC16を用いて数値に変換することで差異を吸収しています。*
 
 #### scaledrone
 
 scaledroneでは、
-- SocketService.jsにおける「ServiceToken毎に作られるスペース」のことを「CHANNEL」、　
-- SocketService.jsにおける「チャンネル」のことを、「ROOM」と呼んでいます。
+- RelayServer.jsにおける「ServiceToken毎に作られるスペース」のことを「CHANNEL」、　
+- RelayServer.jsにおける「チャンネル」のことを、「ROOM」と呼んでいます。
 
 **[用語が交錯しているので注意]**
 
@@ -134,8 +134,8 @@ API Keyの取得
 - [scaledroneのダッシュボード](https://dashboard.scaledrone.com/channels)で、CHANNELを作ります。[+Create channel]ボタン
   - channel nameは任意の文字列を入力します。
   - Authenticationは、テスト用であれば*Never require authentication*が簡便
-  - Message historyは、**Disable message history** を選ぶ。(SocketService.jsは履歴利用非対応であり、セキュリティ上も履歴は残さない方がベター)
-  - SocketService.jsで設定するServiceTokenは、Channel Overviewで表示される**Channel ID**です。*（Secret Keyのほうではないので注意）*
+  - Message historyは、**Disable message history** を選ぶ。(RelayServer.jsは履歴利用非対応であり、セキュリティ上も履歴は残さない方がベター)
+  - RelayServer.jsで設定するServiceTokenは、Channel Overviewで表示される**Channel ID**です。*（Secret Keyのほうではないので注意）*
 
 ## WebIDL
 RelayServer.jsのWebIDLを以下に紹介します。
