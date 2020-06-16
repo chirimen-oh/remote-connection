@@ -82,67 +82,48 @@ channel.sendMessage({temperature:24, humidity:60});
 
 ## サービスごとの利用方法
 
+RelayServer.js では現在、[Achex (Legacy Server)](https://achex.ca/), [Scaledrone](https://www.scaledrone.com/), [WebSocket.IN](https://www.websocket.in/) に対応しています。いずれのサービスを利用する場合でも同じ API で使えるので、好みやサービスの利用制限などに応じて
+
 サービスごとに違いがあるのは、最初の `RelayServer` インスタンスの取得部分のみです。
 ```javascript
-RelayServer("serverName", "serviceToken")
+var relay = RelayServer("serverName", "serviceToken");
 ```
 
 **注: scaledrone では別途専用ライブラリの読み込みも必要です**
 
 ### serverName
 
-serverName には以下のいずれかの文字列を指定してください:
-- ```achex``` ： [Achex](https://achex.ca/)を使います。
+`RelayServer` の第一引数 `serverName` には以下のいずれかの文字列を指定してください:
+- ```achex``` ： [Achex](https://achex.ca/) の Legacy Server を利用します。
 - ```websocket.in``` もしくは ```websocketin``` ： [WebSocket.IN](https://www.websocket.in/)を使います。
 - ```scaledrone``` ： [scaledrone](https://www.scaledrone.com/)を使います。
 
 ### serviceToken
 
-サービスごとにserviceTokenの設定方法が異なります。また、サービスごとに用語の定義が異なります。
+`RelayServer` の第二引数 `serviceToken` にはリレーサーバとの接続時に利用するトークンを指定します。ここでいうトークンはリレーサーバに接続するユーザやクライアントを認証するために使われる乱数文字列で、その指定方法やトークンに該当するものの用語 (API Key や Channel ID) はサービスごとに異なります。
 
-#### Achex
+#### Achex (Legacy Server)
 
-Achexでは任意の文字列が指定できます。特にサービスへのアカウント登録手続きやトークンの申請手続きなどは不要です。
+Achex (Legacy Server) では接続するユーザの認証を行っておらず、トークンとしては任意の文字列を指定できます。サービスへのアカウント登録手続きやトークンの発行手続きなどが不要であり事前準備なく容易に利用できる反面、ユーザの認証を行わないため、同じチャンネル名を指定すると人は誰でも何処からでもメッセージの送受信が出来てしまいます (第三者が送受信できては困る場合には使えない)。
 
-#### WebSocket .IN
+#### WebSocket.IN
 
-WebSocket.INでは、RelayServer.jsにおけるServiceTokenのことを、API Keyと呼んでいます。
+WebSocket.IN では、RelayServer.js における `ServiceToken` のことを、API Key と呼んでいます。
 
-API Keyの取得
+アカウントを作成し、API Key を取得してください:
 
-- [WebSocket.IN](https://www.websocket.in/)で、無料アカウントを作成します
-- [WebSocket.INのダッシュボード](https://www.websocket.in/settings/api)で、API Keyを作ります。(CREATE NEW KEY)ボタン
-  - Key Nameは任意の文字列を入力します。
-  - API Key(ServiceToken)は〇にiのアイコンを押すと出現する**60文字ぐらいのランダムな文字列**です。
-  - API Ket Settings(ギヤのアイコン)で、ドメインを登録すると、そのドメインのコンテンツのみからのアクセスだけを許可することができ、少しセキュリティを高められます。
+- [WebSocket.IN](https://www.websocket.in/) で、無料アカウントを作成します
+- [WebSocket.IN のダッシュボード](https://www.websocket.in/settings/api)で、API Key を作ります。
+  - `Key Name` に任意の名前を指定してください。これは複数の API Key を区別できるよう付ける名前であり、コードや動作には関係ありません。指定せず空白にすることも、後で変更することも可能です。
+  `CREATE NEW KEY` を押すと、指定した名前で API Key が発行され `Current API Keys` のリストに追加されます。
+  - `Current API Keys` リストで 〇 の中に i のアイコンを押すと表示される**60文字ぐらいのランダムな文字列が API Key です**。
+  - `Current API Keys` リストの 〇 の中に歯車のアイコンを推すと API Key を区別する名前や接続元として許可するドメインを指定し、別のドメインのページから接続できないように制限することで、少しセキュリティを高められます。
 
-*Note: WebSocket.INで、チャンネル名は数値のみ許されます。そこでRelayServer.jsでは任意の文字列をCRC16を用いて数値に変換することで差異を吸収しています。*
-
-#### scaledrone
-
-scaledroneでは、
-- RelayServer.jsにおける「ServiceToken毎に作られるスペース」のことを「CHANNEL」、　
-- RelayServer.jsにおける「チャンネル」のことを、「ROOM」と呼んでいます。
-
-**[用語が交錯しているので注意]**
-
-また、scaledrone.comが供給している専用ライブラリを読み込んでおく必要があります。(下記参照)
-```html
-<script src='https://cdn.scaledrone.com/scaledrone-lite.min.js'></script>
-```
-
-
-API Keyの取得
-
-- [scaledrone](https://www.scaledrone.com/)で、無料アカウントを作成します
-- [scaledroneのダッシュボード](https://dashboard.scaledrone.com/channels)で、CHANNELを作ります。[+Create channel]ボタン
-  - channel nameは任意の文字列を入力します。
-  - Authenticationは、テスト用であれば*Never require authentication*が簡便
-  - Message historyは、**Disable message history** を選ぶ。(RelayServer.jsは履歴利用非対応であり、セキュリティ上も履歴は残さない方がベター)
-  - RelayServer.jsで設定するServiceTokenは、Channel Overviewで表示される**Channel ID**です。*（Secret Keyのほうではないので注意）*
+*Note: WebSocket.IN の仕様としては、チャンネル名には数値しか使えません。そこで RelayServer.js では `relay.subscribe()` に指定する任意の文字列をCRC16 を用いて数値に変換することで差異を吸収しています。*
 
 ## WebIDL
-RelayServer.jsのWebIDLを以下に紹介します。
+RelayServer.js の WebIDL を以下に紹介します。
+
 ```WebIDL
 enum ServiceName { "achex", "websocketin" , "websocket.in" , "scaledrone" };
 
