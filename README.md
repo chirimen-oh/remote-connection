@@ -8,7 +8,7 @@ CHIRIMENチュートリアル受講者を想定し、作法をなるべくそれ
 - [Example](examples/example1.html) 
 
 ## ライブラリ
-- [ライブラリはこちら](polyfill/RelayServer.js)
+- [ライブラリ(RelayServer.js)はこちら](polyfill/RelayServer.js)
 
 ## 構成
 
@@ -25,7 +25,7 @@ CHIRIMENチュートリアル受講者を想定し、作法をなるべくそれ
 
 #### ライブラリを読み込む
 ```html
-<script src="http://chirimen.org/remote-connection/polyfill/RelayServer.js"></script>
+<script src="https://chirimen.org/remote-connection/polyfill/RelayServer.js"></script>
 ````
 
 *Note: scaledroneを使用するときには追加のライブラリ読み込みが必要(後述)*
