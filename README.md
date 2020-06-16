@@ -35,7 +35,7 @@ CHIRIMENチュートリアル受講者を想定し、作法をなるべくそれ
 var relay = RelayServer("achex", "chirimenSocket" ); 
 ```
 
-```"achex"```は利用できるサービスの一つの名称、```"chirimenSocket"```はそのサービスを利用するためのトークン(achexの場合、任意の文字列)です。
+ここで、"achex"は利用できるサービスの一つの名称、"chirimenSocket"はそのサービスを利用するためのトークン(achexの場合、任意の文字列)です。
 図のように、トークンごとに別のスペースが作られます。
 他のサービスの利用方法については後述。
 
@@ -44,13 +44,13 @@ var relay = RelayServer("achex", "chirimenSocket" );
 var channel = await relay.subscribe("chirimenLED");
 ```
 
-```"chirimenLED"```がチャンネル名(任意の文字列)です。
+"chirimenLED"がチャンネル名(任意の文字列)です。
 
 - チャンネルは図のようにトークンでつくられたスペースの中にいくつもつくることができます。
 - 同じチャンネルには複数のWebAppsが接続できます。（接続できる個数はサービスごとに異なるようですが、少なくとも数個は接続できます）
 - チャンネルに接続したWebAppsの一つがメッセージを送信すると、同じチャンネルに接続している他のWebApps全てがそれを受信します。
 
-```subscribe()```は非同期関数のためawait接頭詞を忘れずに。初期化ステップはasync関数内で実行すると良いでしょう。
+subscribe()は非同期関数のためawait接頭詞を忘れずに。初期化ステップはasync関数内で実行すると良いでしょう。
 
 
 #### 初期化Step3: メッセージ受信ハンドラを設定する
