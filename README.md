@@ -79,7 +79,7 @@ channel.sendMessage({temperature:24, humidity:60});
 
 ## サービスごとの利用方法
 
-サービスごとに違いがあるのは、最初のRelayServierインスタンスの取得部分のみです。
+サービスごとに違いがあるのは、最初のRelayServerインスタンスの取得部分のみです。
 ```javascript
 RelayServer("serverName", "serviceToken" )
 ```
