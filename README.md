@@ -34,6 +34,7 @@ CHIRIMENチュートリアル受講者を想定し、作法をなるべくそれ
 ```javascript
 var relay = RelayServer("achex", "chirimenSocket" ); 
 ```
+
 ```"achex"```は利用できるサービスの一つの名称、```"chirimenSocket"```はそのサービスを利用するためのトークン(achexの場合、任意の文字列)です。
 図のように、トークンごとに別のスペースが作られます。
 他のサービスの利用方法については後述。
@@ -42,6 +43,7 @@ var relay = RelayServer("achex", "chirimenSocket" );
 ```javascript
 var channel = await relay.subscribe("chirimenLED");
 ```
+
 ```"chirimenLED"```がチャンネル名(任意の文字列)です。
 
 - チャンネルは図のようにトークンでつくられたスペースの中にいくつもつくることができます。
@@ -59,6 +61,7 @@ function getMessage(messageData){
     console.log(messageData);
 }
 ```
+
 onMessageの引数で指定した関数の第一引数にメッセージが送られます。メッセージは文字列もしくは任意のオブジェクトです。（次項参照）
 
 初期化は以上で完了です。
