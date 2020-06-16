@@ -1,24 +1,24 @@
-## 概要
+## RelayServer.js 概要
 
-さまざまなwebSocketリレーサービスを使用して、CHIRIMENデバイスを含むwebAppsを接続して連携可能にする、簡単に使えるライブラリです。
+さまざまな WebSocket リレーサービスを使用して、CHIRIMEN デバイスを含むウェブアプリをインターネットを介して簡単に通信・連携可能にするライブラリです。
 
-CHIRIMENチュートリアル受講者を想定し、作法をなるべくそれに合わせ機能を絞った平易なものになっています。またユーザの状況に合わせ、APIは共通のまま複数のwebSocketリレーサービスから使用するサービスを選択できます。
+[CHIRIMEN チュートリアル](http://tutorial.chirimen.org/) 受講者など初学者による利用を想定し、機能をシンプルに絞り他のライブラリや標準 API とも使い勝手を揃えることで、簡単に使えるよう設計しています。WebSocket リレーサービスはサービス毎に用語や API なども異なりますが、RelayServer.js を使えば同じ API でいつでも好みの WebSocket リレーサービスを切り替え・組み合わせて利用できます。
 
 ## ためしてみる
 - [Example](examples/example1.html) 
 
 ## ライブラリ
-- [ライブラリ(RelayServer.js)はこちら](polyfill/RelayServer.js)
+- [ライブラリ (RelayServer.js) はこちら](polyfill/RelayServer.js)
 
 ## 構成
 
 ![構成図](imgs/relay.png "構成図")
 
-上の構成図でRelayServer.jsの役割を示します。
+上の構成図で RelayServer.js の役割を示します。
 
-- サービスごとの仕様の差異を吸収し、一つのAPIで利用可能にする
-- CHIRIMEN教材のためのデバイス間連携に用途を絞り、APIを簡略化する
-- CHIRIMEN教材とプログラミング作法をあわせ、コールバック処理を削減しAsync/Await処理にする
+- サービスごとの仕様の差異を吸収し、一つの API で利用可能にする
+- CHIRIMEN 教材のためのデバイス間連携に用途を絞り、API を簡略化する
+- CHIRIMEN 教材とプログラミング作法をあわせ、コールバック処理を削減し Async/Await 処理にする
 - 簡易な学習・プロトタイピングを主眼とするため、セキュリティに関する特別な考慮は行っていない
 
 ## 使用方法
@@ -28,29 +28,30 @@ CHIRIMENチュートリアル受講者を想定し、作法をなるべくそれ
 <script src="https://chirimen.org/remote-connection/polyfill/RelayServer.js"></script>
 ````
 
-*Note: scaledroneを使用するときには追加のライブラリ読み込みが必要(後述)*
+*Note: scaledrone を使用するときには追加のライブラリ読み込みが必要です (後述)*
 
-#### 初期化Step1: リレーサービスインスタンスを取得する
+#### 初期化 Step1: リレーサービスインスタンスを取得する
 ```javascript
-var relay = RelayServer("achex", "chirimenSocket" ); 
+var relay = RelayServer("achex", "chirimenSocket"); 
 ```
 
-ここで、"achex"は利用できるサービスの一つの名称、"chirimenSocket"はそのサービスを利用するためのトークン(achexの場合、任意の文字列)です。
-図のように、トークンごとに別のスペースが作られます。
-他のサービスの利用方法については後述。
+**`achex` は利用したいサービス名、`chirimenSocket` はそのサービスを利用するためのトークン (Achex の場合は任意文字列) です。**
+ここでは Achex を利用する場合を例に挙げます (他のサービスでの利用については後述)。
+先の図で示したように、トークンごとに別のスペース (メッセージ中継を行うグループ) が作られ、同一トークンに接続したクライアント間で通信が可能になります。
 
-#### 初期化Step2: チャンネルを取得する
+#### 初期化 Step2: チャンネルを取得する
 ```javascript
 var channel = await relay.subscribe("chirimenLED");
 ```
 
-"chirimenLED"がチャンネル名(任意の文字列)です。
+`chirimenLED` はチャンネル名(任意の文字列)です。
 
-- チャンネルは図のようにトークンでつくられたスペースの中にいくつもつくることができます。
-- 同じチャンネルには複数のWebAppsが接続できます。（接続できる個数はサービスごとに異なるようですが、少なくとも数個は接続できます）
+- チャンネルは図のようにトークンでつくられたスペースの中にいくつも作ることができます。
+- 同じチャンネルに複数のウェブアプリから接続できます。
+  - 同時接続できる数や時間当たりのメッセージ送信数はサービス毎に異なりますが、数個のデバイス、アプリからの同時接続であればどのサービスでも問題ありません。
 - チャンネルに接続したWebAppsの一つがメッセージを送信すると、同じチャンネルに接続している他のWebApps全てがそれを受信します。
 
-subscribe()は非同期関数のためawait接頭詞を忘れずに。初期化ステップはasync関数内で実行すると良いでしょう。
+`subscribe()` はリレーサーバと通信して登録を行う非同期関数です (通信に時間が掛かるため)。呼び出し前に **`await` を付けるのを忘れないようにしてください**。この初期化ステップは `async` を頭に付けた非同期関数内で実行するようにしましょう。
 
 
 #### 初期化Step3: メッセージ受信ハンドラを設定する
@@ -62,16 +63,18 @@ function getMessage(messageData){
 }
 ```
 
-onMessageの引数で指定した関数の第一引数にメッセージが送られます。メッセージは文字列もしくは任意のオブジェクトです。（次項参照）
+`onMessage()` の引数で指定した関数の第一引数にメッセージが送られます。メッセージは文字列もしくは任意のオブジェクトです。（次項参照）
 
 初期化は以上で完了です。
 
 #### メッセージの送信
-一旦初期化が完了すれば、メッセージの送受信ができるようになります。
-メッセージの送信手順は以下です。
+一旦初期化が完了すれば、同じサービス、トークン、チャンネルに登録したウェブアプリ間でメッセージを送受信できます。
+メッセージを送信するときは次のように `sendMessage()` に送信したいメッセージを渡します。
+
 ```javascript
 channel.sendMessage("Hello Remote Device");
 ```
+
 メッセージとしてオブジェクトも受け付けられます。
 ```javascript
 channel.sendMessage({temperature:24, humidity:60});
@@ -79,15 +82,16 @@ channel.sendMessage({temperature:24, humidity:60});
 
 ## サービスごとの利用方法
 
-サービスごとに違いがあるのは、最初のRelayServerインスタンスの取得部分のみです。
+サービスごとに違いがあるのは、最初の `RelayServer` インスタンスの取得部分のみです。
 ```javascript
-RelayServer("serverName", "serviceToken" )
+RelayServer("serverName", "serviceToken")
 ```
-*なおscaledroneでは別途専用ライブラリの読み込みが必要*
+
+**注: scaledrone では別途専用ライブラリの読み込みも必要です**
 
 ### serverName
 
-serverNameには以下の文字列
+serverName には以下のいずれかの文字列を指定してください:
 - ```achex``` ： [Achex](https://achex.ca/)を使います。
 - ```websocket.in``` もしくは ```websocketin``` ： [WebSocket.IN](https://www.websocket.in/)を使います。
 - ```scaledrone``` ： [scaledrone](https://www.scaledrone.com/)を使います。
