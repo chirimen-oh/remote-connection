@@ -21,6 +21,7 @@
 - CHIRIMEN 教材とプログラミング作法をあわせ、コールバック処理を削減し Async/Await 処理にする
 - 簡易な学習・プロトタイピングを主眼とするため、セキュリティに関する特別な考慮は行っていない
 
+-----
 ## 使用方法
 
 #### ライブラリを読み込む
@@ -80,6 +81,8 @@ channel.sendMessage("Hello Remote Device");
 channel.sendMessage({temperature:24, humidity:60});
 ```
 
+
+-----
 ## サービスごとの利用方法
 
 RelayServer.js では現在、[Achex (Legacy Server)](https://achex.ca/), [Scaledrone](https://www.scaledrone.com/), [WebSocket.IN](https://www.websocket.in/) に対応しています。いずれのサービスを利用する場合でも同じ API で使えるので、好みやサービスの利用制限などに応じて
@@ -147,8 +150,9 @@ Scaledrone では、RelayServer.js と用語定義が異なるので注意して
     - RelayServer.js は履歴機能には非対応であり、執筆時点ではダッシュボードで履歴を見る機能もなく、オンにしても特に役には立ちません。セキュリティ上も履歴は残さない方がベターです
   - **Channel を選択すると Channel Overview タブに 16 文字くらいのランダムな文字列で Channel ID が表示されます。これを RelayServer.js の `ServiceToken` に指定します。** Secret Key の方ではないので注意してください。
 
+-----
 ## WebIDL
-RelayServer.js の WebIDL を以下に紹介します。
+RelayServer.js の WebIDL (API 仕様を技術したもの) を以下に紹介します。
 
 ```WebIDL
 enum ServiceName { "achex", "websocketin" , "websocket.in" , "scaledrone" };
