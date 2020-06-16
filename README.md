@@ -108,7 +108,7 @@ Achex (Legacy Server) では接続するユーザの認証を行っておらず�
 
 #### WebSocket.IN
 
-WebSocket.IN では、RelayServer.js における `ServiceToken` のことを、API Key と呼んでいます。
+WebSocket.IN では、RelayServer.js における `ServiceToken` のことを、「API Key」と呼んでいます。
 
 アカウントを作成し、API Key を取得してください:
 
@@ -116,10 +116,34 @@ WebSocket.IN では、RelayServer.js における `ServiceToken` のことを、
 - [WebSocket.IN のダッシュボード](https://www.websocket.in/settings/api)で、API Key を作ります。
   - `Key Name` に任意の名前を指定してください。これは複数の API Key を区別できるよう付ける名前であり、コードや動作には関係ありません。指定せず空白にすることも、後で変更することも可能です。
   `CREATE NEW KEY` を押すと、指定した名前で API Key が発行され `Current API Keys` のリストに追加されます。
-  - `Current API Keys` リストで 〇 の中に i のアイコンを押すと表示される**60文字ぐらいのランダムな文字列が API Key です**。
+  - **`Current API Keys` リストで 〇 の中に i のアイコンを押すと 60 文字ぐらいのランダムな文字列の API Key が表示されます。これを RelayServer.js の `ServiceToken` に指定します。**
   - `Current API Keys` リストの 〇 の中に歯車のアイコンを推すと API Key を区別する名前や接続元として許可するドメインを指定し、別のドメインのページから接続できないように制限することで、少しセキュリティを高められます。
 
 *Note: WebSocket.IN の仕様としては、チャンネル名には数値しか使えません。そこで RelayServer.js では `relay.subscribe()` に指定する任意の文字列をCRC16 を用いて数値に変換することで差異を吸収しています。*
+
+#### Scaledrone
+
+Scaledrone では、RelayServer.js と用語定義が異なるので注意してください。
+- RelayServer.js における `ServiceToken` は「Channel ID」になります
+- RelayServer.js における「`ServiceToken` 毎に作られるスペース」のことを「CHANNEL」と呼びます
+- RelayServer.js における「チャンネル」のことを、「ROOM」と呼びます
+
+また、RelayServer.js の前に **scaledrone.com が配信している専用ライブラリも読み込む必要があります:
+
+```html
+<script src='https://cdn.scaledrone.com/scaledrone-lite.min.js'></script>
+<script src="https://chirimen.org/remote-connection/polyfill/RelayServer.js"></script>
+```
+
+アカウントとチャンネルを作成し、トークン (Channel ID) を取得してください:
+
+- [scaledrone](https://www.scaledrone.com/)で、無料アカウントを作成します
+- [scaledroneのダッシュボード](https://dashboard.scaledrone.com/channels)で、`+Create channel` ボタンを押して CHANNEL を作ります
+  - `channel name` に任意の名前を指定してください。
+  - Authenticationは、テスト用であれば *Never require authentication* にするのが簡単です
+  - Message historyは、**Disable message history** を選ぶ。
+    - RelayServer.js は履歴機能には非対応であり、執筆時点ではダッシュボードで履歴を見る機能もなく、オンにしても特に役には立ちません。セキュリティ上も履歴は残さない方がベターです
+  - **Channel を選択すると Channel Overview タブに 16 文字くらいのランダムな文字列で Channel ID が表示されます。これを RelayServer.js の `ServiceToken` に指定します。** Secret Key の方ではないので注意してください。
 
 ## WebIDL
 RelayServer.js の WebIDL を以下に紹介します。
