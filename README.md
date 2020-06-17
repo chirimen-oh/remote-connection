@@ -1,3 +1,5 @@
+<p align="right">Language: <a href="https://chirimen.org/remote-connection/">Japanese</a>, <a href="https://translate.google.co.jp/translate?sl=ja&tl=en&u=https%3A%2F%2Fchirimen.org%2Fremote-connection%2F">English (Google Translation)</a></p>
+
 ## RelayServer.js 概要
 
 さまざまな WebSocket リレーサービスを使用して、CHIRIMEN デバイスを含むウェブアプリをインターネットを介して簡単に通信・連携可能にするライブラリです。
