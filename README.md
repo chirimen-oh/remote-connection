@@ -8,7 +8,7 @@
 - [Example](examples/example1.html) 
 
 ## ライブラリ
-- [ライブラリ (RelayServer.js) はこちら](polyfill/RelayServer.js)
+- [ライブラリ (RelayServer.js) はこちら](js/RelayServer.js)
 
 ## 構成
 
@@ -26,7 +26,7 @@
 
 #### ライブラリを読み込む
 ```html
-<script src="https://chirimen.org/remote-connection/polyfill/RelayServer.js"></script>
+<script src="https://chirimen.org/remote-connection/js/RelayServer.js"></script>
 ````
 
 *Note: scaledrone を使用するときには追加のライブラリ読み込みが必要です (後述)*
@@ -137,7 +137,7 @@ Scaledrone では、RelayServer.js と用語定義が異なるので注意して
 
 ```html
 <script src='https://cdn.scaledrone.com/scaledrone-lite.min.js'></script>
-<script src="https://chirimen.org/remote-connection/polyfill/RelayServer.js"></script>
+<script src="https://chirimen.org/remote-connection/js/RelayServer.js"></script>
 ```
 
 アカウントとチャンネルを作成し、トークン (Channel ID) を取得してください:
