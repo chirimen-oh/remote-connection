@@ -63,28 +63,28 @@ var channel = await relay.subscribe("chirimenLED");
 
 #### 初期化Step3: メッセージ受信ハンドラを設定する
 ```javascript
-channel.onMessage(getMessage);
+channel.onmessage(getMessage);
 
 function getMessage(messageData){
     console.log(messageData);
 }
 ```
 
-`onMessage()` の引数で指定した関数(ハンドラ)の第一引数にメッセージが送られます。メッセージは文字列もしくは任意のオブジェクトです。（次項参照）
+`onmessage()` の引数で指定した関数(ハンドラ)の第一引数にメッセージが送られます。メッセージは文字列もしくは任意のオブジェクトです。（次項参照）
 
 初期化は以上で完了です。
 
 #### メッセージの送信
 一旦初期化が完了すれば、同じサービス、トークン、チャンネルに登録したウェブアプリ間でメッセージを送受信できます。
-メッセージを送信するときは次のように `sendMessage()` に送信したいメッセージを渡します。
+メッセージを送信するときは次のように `send()` に送信したいメッセージを渡します。
 
 ```javascript
-channel.sendMessage("Hello Remote Device");
+channel.send("Hello Remote Device");
 ```
 
 メッセージとしてオブジェクトも受け付けられます。
 ```javascript
-channel.sendMessage({temperature:24, humidity:60});
+channel.send({temperature:24, humidity:60});
 ```
 
 
@@ -171,8 +171,8 @@ interface RelayServer {
 
 interface Channel {
   readonly attribute USVString serverName;
-  void onMessage(MessageHandler handler);
-  void sendMessage(USVString or object );
+  void onmessage(MessageHandler handler);
+  void send(USVString or object );
 };
 
 callback interface MessageHandler {
