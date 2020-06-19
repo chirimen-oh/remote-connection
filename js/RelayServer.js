@@ -49,8 +49,8 @@ interface RelayServer {
 
 interface Channel {
   readonly attribute USVString serverName;
-  void onMessage(MessageHandler handler);
-  void sendMessage(USVString or object );
+  void onmessage(MessageHandler handler);
+  void send(USVString or object );
 };
 
 callback interface MessageHandler {
@@ -93,14 +93,14 @@ function RelayServer(serviceName, serviceToken){
 			if (!channelName){channelName=defaultChannelName}
 			await open(channelName);
 			console.log("websocketInModule:channelOpened");
-			function onMessage(cbFunc){
+			function onmessage(cbFunc){
 				socket.addEventListener('message', function(event){
 //					console.log('message',event);
 					var json = JSON.parse(event.data);
 					cbFunc( json.body );
 				});
 			}
-			function sendMessage(msg){
+			function send(msg){
 //				console.log("sendMsg:",msg,"  typeof(msg)",typeof(msg));
 				var outMsg={body:msg};
 				outMsg = JSON.stringify(outMsg);
@@ -109,8 +109,8 @@ function RelayServer(serviceName, serviceToken){
 			}
 			return {
 				serverName:"websocket.in",
-				onMessage:onMessage,
-				sendMessage:sendMessage
+				onmessage:onmessage,
+				send:send
 			}
 		}
 		return {
@@ -140,7 +140,7 @@ function RelayServer(serviceName, serviceToken){
 			if (!channelName){channelName=defaultChannelName}
 			await open(channelName);
 			console.log("scaledroneModule:channelOpened");
-			function onMessage(cbFunc){
+			function onmessage(cbFunc){
 				room.on('message', function(message){
 //					console.log('Received data:', message);
 					// 自分が送ったものは返さないようにね
@@ -149,7 +149,7 @@ function RelayServer(serviceName, serviceToken){
 					}
 				});
 			}
-			function sendMessage(msg){
+			function send(msg){
 				drone.publish({
 					room: channelName,
 //					message: {body:msg}
@@ -158,8 +158,8 @@ function RelayServer(serviceName, serviceToken){
 			}
 			return {
 				serverName:"scaledrone",
-				onMessage:onMessage,
-				sendMessage:sendMessage
+				onmessage:onmessage,
+				send:send
 			}
 		}
 		return {
@@ -188,7 +188,7 @@ function RelayServer(serviceName, serviceToken){
 			if (!channelName){channelName=defaultChannelName}
 			await open(channelName);
 			console.log("achexModule:channelOpened");
-			function onMessage(cbFunc){
+			function onmessage(cbFunc){
 				socket.addEventListener('message', function(event){
 //					console.log('message',event);
 					const json = JSON.parse(event.data);
@@ -202,19 +202,19 @@ function RelayServer(serviceName, serviceToken){
 					}
 				});
 			}
-			function sendMessage(msg){
+			function send(msg){
 				var outMsg={
 					to: userName,
 					msg:msg,
 				};
 				outMsg = JSON.stringify(outMsg);
-//				console.log("achexModule to sendMessage:",outMsg);
+//				console.log("achexModule to send:",outMsg);
 				socket.send(outMsg);
 			}
 			return {
 				serverName:"achex",
-				onMessage:onMessage,
-				sendMessage:sendMessage
+				onmessage:onmessage,
+				send:send
 			}
 		}
 //		await open();
