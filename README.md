@@ -70,7 +70,7 @@ function getMessage(messageData){
 }
 ```
 
-`onMessage()` の引数で指定した関数の第一引数にメッセージが送られます。メッセージは文字列もしくは任意のオブジェクトです。（次項参照）
+`onMessage()` の引数で指定した関数(ハンドラ)の第一引数にメッセージが送られます。メッセージは文字列もしくは任意のオブジェクトです。（次項参照）
 
 初期化は以上で完了です。
 
@@ -91,7 +91,7 @@ channel.sendMessage({temperature:24, humidity:60});
 -----
 ## サービスごとの利用方法
 
-RelayServer.js では現在、[Achex (Legacy Server)](https://achex.ca/), [Scaledrone](https://www.scaledrone.com/), [WebSocket.IN](https://www.websocket.in/) に対応しています。いずれのサービスを利用する場合でも同じ API で使えるので、好みやサービスの利用制限などに応じて
+RelayServer.js では現在、[Achex (Legacy Server)](https://achex.ca/), [Scaledrone](https://www.scaledrone.com/), [WebSocket.IN](https://www.websocket.in/) に対応しています。いずれのサービスを利用する場合でも同じ API で使えるので、好みやサービスの利用制限などに応じて簡単に切り替えられます。
 
 サービスごとに違いがあるのは、最初の `RelayServer` インスタンスの取得部分のみです。
 ```javascript
@@ -158,7 +158,7 @@ Scaledrone では、RelayServer.js と用語定義が異なるので注意して
 
 -----
 ## WebIDL
-RelayServer.js の WebIDL (API 仕様を技術したもの) を以下に紹介します。
+RelayServer.js の [WebIDL](https://heycam.github.io/webidl/) (API 仕様を記述したもの) を以下に紹介します。
 
 ```WebIDL
 enum ServiceName { "achex", "websocketin" , "websocket.in" , "scaledrone" };
