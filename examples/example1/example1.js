@@ -9,7 +9,7 @@ onload = async function(){ // relay.subscribeがpromiseなので、async functio
 	messageDiv.innerText="connected : achex";
 	
 	// メッセージを受信したときに起動する関数を登録
-	channel.onMessage(getMessage);
+	channel.onmessage(getMessage);
 }
 
 function getMessage(message){ // メッセージを受信したときに起動する関数
@@ -17,6 +17,6 @@ function getMessage(message){ // メッセージを受信したときに起動�
 }
 
 function sendMessage(){ // メッセージを送信する(テキスト)
-	channel.sendMessage("Hello from "+location.hash+" date:"+new Date()); // テキストを出してみる
+	channel.send("Hello from "+location.hash+" date:"+new Date()); // テキストを出してみる
 }
 
