@@ -7,9 +7,10 @@
 [CHIRIMEN チュートリアル](http://tutorial.chirimen.org/) 受講者など初学者による利用を想定し、機能をシンプルに絞り他のライブラリや標準 API とも使い勝手を揃えることで、簡単に使えるよう設計しています。WebSocket リレーサービスはサービス毎に用語や API なども異なりますが、RelayServer.js を使えば同じ API でいつでも好みの WebSocket リレーサービスを切り替え・組み合わせて利用できます。
 
 ## ためしてみる
+
 |  `Live` Demo  |  Source  |
-| ---- | ---- |
-|  [Example1](examples/example1/index.html) |  [GitHub](https://github.com/chirimen-oh/remote-connection/blob/master/examples/example1/)  |
+|:---|:---|
+| [Example1](examples/example1/index.html) | [GitHub](https://github.com/chirimen-oh/remote-connection/blob/master/examples/example1/)  |
   
 
 ## ライブラリ
