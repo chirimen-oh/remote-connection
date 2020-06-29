@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<script src='https://cdn.scaledrone.com/scaledrone-lite.min.js'></script>
+<script src='https://chirimen.org/remote-connection/js/RelayServer.js'></script>
+
+<script>
+
+
+var iframeNumber=0;
+var relay;
+var serviceToken="chirimenTestToken"; // 適当な名前でOKなのはachexだけです。
+var channel;
+onload = async function(){ // relay.subscribeがpromiseなので、async functionで実行する
+	
+	var svh = (location.hash).split(":");
+	
+	if ( svh.length >1){
+		serviceToken = svh[1];
+	}
+	// 画面の体裁整えてるだけのコード(あまり意味ない)
+	if ( svh.length >2){
+		iframeNumber=svh[2];
+		document.getElementById("deviceTitle").innerText="device:"+iframeNumber+svh[0];
+	}
+	console.log("service:",svh[0],"  serviceToken:",serviceToken,"  iframeNumber:",iframeNumber);
+	
+	// まずRelayServierオブジェクトをつくる
+	// 以下冗長だがlocation.hashの値によって、接続先のサービスを変更する感じにしてテストしやすくしてある。
+	if (svh[0].indexOf("scaledrone") >=0){
+		relay = RelayServer("scaledrone", serviceToken ); // scaledrine, websocketinのアクセストークンは自分で取得してください
+	} else if ( svh[0].indexOf("websocketin") >=0){
+		relay = RelayServer("websocketin", serviceToken );
+	} else {
+		relay = RelayServer("achex", serviceToken ); // achexは、なんか適当で大丈夫
+	}
+	
+	
+	// チャンネルをサブスクライブする(Promiseなので await注意)
+	channel = await relay.subscribe("chirimenChannel"); // チャンネル名は適当で良い(無くてもとりあえず動く)
+	
+	showMessage("connected : "+channel.serverName); // つながったのでメッセージ出しているだけです
+	
+	// メッセージを受信したときに起動する関数を登録
+	channel.onmessage=getMessage;
+}
+
+function getMessage(msg){ // メッセージを受信したときに起動する関数
+	console.log("Get message on "+iframeNumber+".   Message : ",msg);
+	showMessage(JSON.stringify(msg.data));
+}
+
+function sendMsgStr(){ // メッセージを送信する(テキスト)
+	channel.send("Hello from "+iframeNumber+" date:"+new Date()); // テキストを出してみる
+}
+function sendMsgObj(){ // メッセージを送信する(オブジェクト)
+	channel.send(
+		{
+			messageText : "Hello from device"+iframeNumber,
+			clientNumber : iframeNumber,
+			time : (new Date()).getTime()
+		}
+	);
+}
+
+
+var msgId=0;
+function showMessage(message){
+	// 画面に3秒メッセージ出して消す感じのコード　あまり意味はない
+	++msgId;
+	var msgDiv = document.getElementById("messageDiv");
+	msgDiv.innerText=message;
+	setTimeout(function(mid){
+		return (function changeFunc(){
+			if ( msgId == mid){	
+				msgDiv.innerText="";
+			}
+		})
+	}(msgId),3000);
+}
+
+</script>
+<body>
+<h3 id="deviceTitle">device</h3>
+<input type="button" onclick="sendMsgStr()" value="send text"></input>
+<input type="button" onclick="sendMsgObj()" value="send object"></input>
+<div id="messageDiv" style="font-size:11px"></div>
+</body>
+</html>
