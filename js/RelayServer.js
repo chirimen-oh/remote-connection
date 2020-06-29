@@ -34,8 +34,10 @@ So, this is a limited dual license for the CHIRIMEN community.
 ================================================================================
 History
 
-2020/6/15 1st draft
-
+2020/06/15 : 1st draft
+2020/06/29 : onmessage(cbfunc) -> onmessage=cbfunc(message)
+             message.data,.origin,.timeStamp
+             
 ================================================================================
 WebIDL:
 
@@ -49,13 +51,19 @@ interface RelayServer {
 
 interface Channel {
   readonly attribute USVString serverName;
-  void onmessage(MessageHandler handler);
+  attribute MessageHandler onmessage;
   void send(USVString or object );
 };
 
 callback interface MessageHandler {
-  void handleMessage(object message);
+  void handleMessage(RSMessage message);
 };
+
+interface  RSMessage {
+  readonly attribute object data;
+  readonly attribute USVString origin;
+  readonly attribute USVString timeStamp;
+}
 
 **/
 
@@ -97,7 +105,12 @@ function RelayServer(serviceName, serviceToken){
 				socket.addEventListener('message', function(event){
 //					console.log('message',event);
 					var json = JSON.parse(event.data);
-					cbFunc( json.body );
+					cbFunc( {
+						data:json.body,
+						timeStamp:event.timeStamp,
+						origin:event.origin,
+//						lastEventId: event.lastEventId  
+					} );
 				});
 			}
 			function send(msg){
@@ -109,7 +122,7 @@ function RelayServer(serviceName, serviceToken){
 			}
 			return {
 				serverName:"websocket.in",
-				onmessage:onmessage,
+				set onmessage(cbf){onmessage(cbf)},
 				send:send
 			}
 		}
@@ -122,6 +135,7 @@ function RelayServer(serviceName, serviceToken){
 	function scaledroneModule(){
 		var drone, room;
 		var clientId;
+		var sdUrl;
 		function open(channelName){
 			drone = new Scaledrone(serviceToken);
 			room = drone.subscribe(channelName);
@@ -131,6 +145,7 @@ function RelayServer(serviceName, serviceToken){
 						ngCallback(error);
 					}
 					clientId = drone.clientId;
+					sdUrl = new URL(drone.connection.url);
 //					console.log("connected: clientId:",clientId);
 					okCallback(true);
 				});
@@ -145,7 +160,12 @@ function RelayServer(serviceName, serviceToken){
 //					console.log('Received data:', message);
 					// 自分が送ったものは返さないようにね
 					if ( message.clientId != clientId ){
-						cbFunc( message.data );
+						cbFunc( {
+							data:message.data,
+							timeStamp:message.timestamp,
+							origin:sdUrl.origin,
+//							lastEventId: message.id  
+						} );
 					}
 				});
 			}
@@ -158,7 +178,7 @@ function RelayServer(serviceName, serviceToken){
 			}
 			return {
 				serverName:"scaledrone",
-				onmessage:onmessage,
+				set onmessage(cbf){onmessage(cbf)},
 				send:send
 			}
 		}
@@ -197,7 +217,12 @@ function RelayServer(serviceName, serviceToken){
 					} else {
 //						console.log("json.sID:",json.sID,"  thisSID:",SID);
 						if ( json.sID != SID ){ // 自分が投げたものは返答しないことにする
-							cbFunc( json.msg );
+							cbFunc( {
+								data:json.msg,
+								timeStamp:event.timeStamp,
+								origin:event.origin,
+//								lastEventId: event.lastEventId
+							} );
 						}
 					}
 				});
@@ -213,7 +238,7 @@ function RelayServer(serviceName, serviceToken){
 			}
 			return {
 				serverName:"achex",
-				onmessage:onmessage,
+				set onmessage(cbf){onmessage(cbf)},
 				send:send
 			}
 		}

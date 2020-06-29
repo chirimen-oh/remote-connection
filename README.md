@@ -63,14 +63,14 @@ var channel = await relay.subscribe("chirimenLED");
 
 #### 初期化Step3: メッセージ受信ハンドラを設定する
 ```javascript
-channel.onmessage(getMessage);
+channel.onmessage = getMessage;
 
-function getMessage(messageData){
-    console.log(messageData);
+function getMessage(message){
+    console.log(message.data);
 }
 ```
 
-`onmessage()` の引数で指定した関数(ハンドラ)の第一引数にメッセージが送られます。メッセージは文字列もしくは任意のオブジェクトです。（次項参照）
+`onmessage` に代入した関数(ハンドラ)の第一引数にメッセージオブジェクト(上の例では変数名message)送られます。メッセージオブジェクトのdataプロパティにメッセージ本文が入っています。(上の例ではmessage.data) メッセージ本文は文字列もしくは任意のオブジェクトです。（次項参照）
 
 初期化は以上で完了です。
 
@@ -171,11 +171,17 @@ interface RelayServer {
 
 interface Channel {
   readonly attribute USVString serverName;
-  void onmessage(MessageHandler handler);
+  attribute MessageHandler onmessage;
   void send(USVString or object );
 };
 
 callback interface MessageHandler {
-  void handleMessage(object message);
+  void handleMessage(RSMessage message);
 };
+
+interface  RSMessage {
+  readonly attribute object data;
+  readonly attribute USVString origin;
+  readonly attribute USVString timeStamp;
+}
 ```
