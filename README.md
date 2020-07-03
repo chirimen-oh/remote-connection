@@ -22,6 +22,7 @@
 
 上の構成図で RelayServer.js の役割を示します。
 
+- [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API)を用いたWebApps間通信を簡便に利用可能にする
 - サービスごとの仕様の差異を吸収し、一つの API で利用可能にする
 - CHIRIMEN 教材のためのデバイス間連携に用途を絞り、API を簡略化する
 - CHIRIMEN 教材とプログラミング作法をあわせ、コールバック処理を削減し Async/Await 処理にする
