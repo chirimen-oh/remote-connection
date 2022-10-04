@@ -6,6 +6,8 @@
 
 [CHIRIMEN チュートリアル](http://tutorial.chirimen.org/) 受講者など初学者による利用を想定し、機能をシンプルに絞り他のライブラリや標準 API とも使い勝手を揃えることで、簡単に使えるよう設計しています。WebSocket リレーサービスはサービス毎に用語や API なども異なりますが、RelayServer.js を使えば同じ API でいつでも好みの WebSocket リレーサービスを切り替え・組み合わせて利用できます。
 
+ Node.jsで使用することもできます（CHIRIMEN Pi Zero版でも使用可能(後述)）
+
 ## ためしてみる
 
 |  `Live` Demo  |  Source  |
@@ -116,11 +118,12 @@ var relay = RelayServer("serverName", "serviceToken");
 #### Node.jsで使用する場合
 ```javascript
 import nodeWebSocketLib from "websocket"; // https://www.npmjs.com/package/websocket
+import { RelayServer } from "./RelayServer.js";
 var relay = RelayServer("serverName", "serviceToken", nodeWebSocketLib, OriginURL);
 ```
 
 ##### nodeWebSocketLib
-websocketライブラリ、　https://www.npmjs.com/package/websocket　を指定しています。
+websocketライブラリ、　https://www.npmjs.com/package/websocket を指定しています。
 
 ##### OriginURL
 node.jsのソフトウェアはウェブアプリと異なりコンテンツ(WebApp)のオリジンがありませんが、リレーサービスでは多くの場合オリジンが要求されます。そこでオリジンのURL(https://ドメイン名)を指定します。もしnode.jsのソフトと対向して動作するウェブアプリがあるなら、そのドメインと同じものを設定すると良いでしょう。
