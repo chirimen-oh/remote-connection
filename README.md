@@ -105,7 +105,7 @@ var relay = RelayServer("serverName", "serviceToken");
 
 `RelayServer` の第一引数 `serverName` には以下のいずれかの文字列を指定してください:
 - ```achex``` ： [Achex](https://achex.ca/) の Legacy Server を利用します。
-- ```piesocket``` ： [WebSocket.IN](https://www.piesocket.com/)を使います。
+- ```piesocket``` ： [piesocket](https://www.piesocket.com/)を使います。
 - ```scaledrone``` ： [scaledrone](https://www.scaledrone.com/)を使います。
 <!-- - ```websocket.in``` もしくは ```websocketin``` ： [WebSocket.IN](https://www.websocket.in/)を使います。-->
 
