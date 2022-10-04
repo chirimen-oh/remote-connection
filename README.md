@@ -102,10 +102,10 @@ var relay = RelayServer("serverName", "serviceToken", nodeWebSocketLib, "OriginU
 ```
 
 #### nodeWebSocketLib
-websocketライブラリ、　https://www.npmjs.com/package/websocket を指定しています。
+npmでインストールしたライブラリ```websocket```　(https://www.npmjs.com/package/websocket) の```nodeWebSocketLib```を指定します、
 
 #### OriginURL
-node.jsのソフトウェアはウェブアプリと異なりコンテンツ(WebApp)のオリジンがありませんが、リレーサービスでは多くの場合オリジンが要求されます。そこでオリジンのURL(https://ドメイン名)を指定します。もしnode.jsのソフトと対向して動作するウェブアプリがあるなら、そのドメインと同じものを設定すると良いでしょう。
+node.jsのソフトウェアはウェブアプリと異なりコンテンツ(ウェブアプリ)のオリジンがありませんが、リレーサービスでは多くの場合オリジンが要求されます。そこでオリジンのURL(https://ドメイン名)を指定します。もしnode.jsのソフトと対向して動作するウェブアプリがあるなら、そのドメインと同じものを設定すると良いでしょう。
 
 
 -----
