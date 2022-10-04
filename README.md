@@ -90,6 +90,23 @@ channel.send("Hello Remote Device");
 channel.send({temperature:24, humidity:60});
 ```
 
+-----
+## Node.jsで使用する場合
+
+ライブラリの読み込みと、RelayServerインスタンス生成のためのパラメータに違いがあります。
+
+```javascript
+import nodeWebSocketLib from "websocket"; // https://www.npmjs.com/package/websocket
+import { RelayServer } from "./RelayServer.js";
+var relay = RelayServer("serverName", "serviceToken", nodeWebSocketLib, OriginURL);
+```
+
+#### nodeWebSocketLib
+websocketライブラリ、　https://www.npmjs.com/package/websocket を指定しています。
+
+#### OriginURL
+node.jsのソフトウェアはウェブアプリと異なりコンテンツ(WebApp)のオリジンがありませんが、リレーサービスでは多くの場合オリジンが要求されます。そこでオリジンのURL(https://ドメイン名)を指定します。もしnode.jsのソフトと対向して動作するウェブアプリがあるなら、そのドメインと同じものを設定すると良いでしょう。
+
 
 -----
 ## サービスごとの利用方法
@@ -114,19 +131,6 @@ var relay = RelayServer("serverName", "serviceToken");
 #### serviceToken
 
 `RelayServer` の第二引数 `serviceToken` にはリレーサーバとの接続時に利用するトークンを指定します。ここでいうトークンはリレーサーバに接続するユーザやクライアントを認証するために使われる乱数文字列で、その指定方法やトークンに該当するものの用語 (API Key や Channel ID) はサービスごとに異なります。
-
-#### Node.jsで使用する場合
-```javascript
-import nodeWebSocketLib from "websocket"; // https://www.npmjs.com/package/websocket
-import { RelayServer } from "./RelayServer.js";
-var relay = RelayServer("serverName", "serviceToken", nodeWebSocketLib, OriginURL);
-```
-
-##### nodeWebSocketLib
-websocketライブラリ、　https://www.npmjs.com/package/websocket を指定しています。
-
-##### OriginURL
-node.jsのソフトウェアはウェブアプリと異なりコンテンツ(WebApp)のオリジンがありませんが、リレーサービスでは多くの場合オリジンが要求されます。そこでオリジンのURL(https://ドメイン名)を指定します。もしnode.jsのソフトと対向して動作するウェブアプリがあるなら、そのドメインと同じものを設定すると良いでしょう。
 
 ### Achex <!--(Legacy Server)-->
 
