@@ -105,13 +105,25 @@ var relay = RelayServer("serverName", "serviceToken");
 
 `RelayServer` の第一引数 `serverName` には以下のいずれかの文字列を指定してください:
 - ```achex``` ： [Achex](https://achex.ca/) の Legacy Server を利用します。
-<!-- - ```websocket.in``` もしくは ```websocketin``` ： [WebSocket.IN](https://www.websocket.in/)を使います。-->
-- ```websocket.in``` もしくは ```websocketin``` ： [WebSocket.IN](https://www.websocket.in/)を使います。
+- ```piesocket``` ： [WebSocket.IN](https://www.piesocket.com/)を使います。
 - ```scaledrone``` ： [scaledrone](https://www.scaledrone.com/)を使います。
+<!-- - ```websocket.in``` もしくは ```websocketin``` ： [WebSocket.IN](https://www.websocket.in/)を使います。-->
 
 #### serviceToken
 
 `RelayServer` の第二引数 `serviceToken` にはリレーサーバとの接続時に利用するトークンを指定します。ここでいうトークンはリレーサーバに接続するユーザやクライアントを認証するために使われる乱数文字列で、その指定方法やトークンに該当するものの用語 (API Key や Channel ID) はサービスごとに異なります。
+
+#### Node.jsで使用する場合
+```javascript
+import nodeWebSocketLib from "websocket"; // https://www.npmjs.com/package/websocket
+var relay = RelayServer("serverName", "serviceToken", nodeWebSocketLib, OriginURL);
+```
+
+##### nodeWebSocketLib
+websocketライブラリ、　https://www.npmjs.com/package/websocket　を指定しています。
+
+##### OriginURL
+node.jsのソフトウェアはウェブアプリと異なりコンテンツ(WebApp)のオリジンがありませんが、リレーサービスでは多くの場合オリジンが要求されます。そこでオリジンのURL(https://ドメイン名)を指定します。もしnode.jsのソフトと対向して動作するウェブアプリがあるなら、そのドメインと同じものを設定すると良いでしょう。
 
 ### Achex <!--(Legacy Server)-->
 
