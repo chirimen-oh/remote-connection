@@ -105,6 +105,7 @@ var relay = RelayServer("serverName", "serviceToken");
 
 `RelayServer` の第一引数 `serverName` には以下のいずれかの文字列を指定してください:
 - ```achex``` ： [Achex](https://achex.ca/) の Legacy Server を利用します。
+<!-- - ```websocket.in``` もしくは ```websocketin``` ： [WebSocket.IN](https://www.websocket.in/)を使います。-->
 - ```websocket.in``` もしくは ```websocketin``` ： [WebSocket.IN](https://www.websocket.in/)を使います。
 - ```scaledrone``` ： [scaledrone](https://www.scaledrone.com/)を使います。
 
@@ -112,26 +113,29 @@ var relay = RelayServer("serverName", "serviceToken");
 
 `RelayServer` の第二引数 `serviceToken` にはリレーサーバとの接続時に利用するトークンを指定します。ここでいうトークンはリレーサーバに接続するユーザやクライアントを認証するために使われる乱数文字列で、その指定方法やトークンに該当するものの用語 (API Key や Channel ID) はサービスごとに異なります。
 
-### Achex (Legacy Server)
+### Achex <!--(Legacy Server)-->
 
-Achex (Legacy Server) の使い方は上記の例の通りです。
+Achex <!--(Legacy Server)--> の使い方は上記の例の通りです。
 
-Achex (Legacy Server) では接続するユーザの認証を行っておらず、トークンとしては任意の文字列を指定できます。サービスへのアカウント登録手続きやトークンの発行手続きなどが不要であり事前準備なく容易に利用できる反面、ユーザの認証を行わないため、同じチャンネル名を指定すると人は誰でも何処からでもメッセージの送受信が出来てしまいます (第三者が送受信できては困る場合には使えない)。
+Achex <!--(Legacy Server)--> では接続するユーザの認証を行っておらず、トークンとしては任意の文字列を指定できます。サービスへのアカウント登録手続きやトークンの発行手続きなどが不要であり事前準備なく容易に利用できる反面、ユーザの認証を行わないため、同じチャンネル名を指定すると人は誰でも何処からでもメッセージの送受信が出来てしまいます (第三者が送受信できては困る場合には使えない)。ただしプロトコルはwss( WebSocket Secure (WSS) : TLSを用いた暗号通信)
 
-### WebSocket.IN
+<!-- ### WebSocket.IN -->
+### piesocket
 
-WebSocket.IN では、RelayServer.js における `ServiceToken` のことを、「API Key」と呼んでいます。
+piesocket では、RelayServer.js における `ServiceToken` のことを、「API Key」と呼んでいます。
 
 アカウントを作成し、API Key を取得してください:
 
-- [WebSocket.IN](https://www.websocket.in/) で、無料アカウントを作成します
-- [WebSocket.IN のダッシュボード](https://www.websocket.in/settings/api)で、API Key を作ります。
-  - `Key Name` に任意の名前を指定してください。これは複数の API Key を区別できるよう付ける名前であり、コードや動作には関係ありません。指定せず空白にすることも、後で変更することも可能です。
-  `CREATE NEW KEY` を押すと、指定した名前で API Key が発行され `Current API Keys` のリストに追加されます。
-  - **`Current API Keys` リストで 〇 の中に i のアイコンを押すと 60 文字ぐらいのランダムな文字列の API Key が表示されます。これを RelayServer.js の `ServiceToken` に指定します。**
-  - `Current API Keys` リストの 〇 の中に歯車のアイコンを推すと API Key を区別する名前や接続元として許可するドメインを指定し、別のドメインのページから接続できないように制限することで、少しセキュリティを高められます。
+- [piesocket](https://www.piesocket.com/) で、無料アカウントを作成します
+- [piesocket のAPI Keys](https://www.piesocket.com/app/api)で、API Key を作ります。
+  - `Enter Key Name` に任意の名前を指定してください。これは複数の API Key を区別できるよう付ける名前であり、コードや動作には関係ありません。指定せず空白にすることも、後で変更することも可能です。
+  - `Enter Key Name` はNew Yorkを選択します。
+  - `Select Platform` はWebを選択します。
+  `GENERATE KEY` を押すと、指定した名前で API Key が発行され `API Keys` のリストに追加されます。
+  - **`Current API Keys` リストで 〇 の中に i のアイコン(view credentials)を押すと 60 文字ぐらいのランダムな文字列の API Key が表示されます。これを RelayServer.js の `ServiceToken` に指定します。**
+  - `Current API Keys` リストの 〇 の中に歯車のアイコンを押すと API Key を区別する名前や接続元として許可するドメインを指定し、別のドメインのページから接続できないように制限することで、少しセキュリティを高められます。
 
-*Note: WebSocket.IN の仕様としては、チャンネル名には数値しか使えません。そこで RelayServer.js では `relay.subscribe()` に指定する任意の文字列をCRC16 を用いて数値に変換することで差異を吸収しています。*
+*Note: piesocket の仕様としては、チャンネル名には数値しか使えません。そこで RelayServer.js では `relay.subscribe()` に指定する任意の文字列をCRC16 を用いて数値に変換することで差異を吸収しています。*
 
 ### Scaledrone
 
