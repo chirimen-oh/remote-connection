@@ -98,7 +98,7 @@ channel.send({temperature:24, humidity:60});
 ```javascript
 import nodeWebSocketLib from "websocket"; // https://www.npmjs.com/package/websocket
 import { RelayServer } from "./RelayServer.js";
-var relay = RelayServer("serverName", "serviceToken", nodeWebSocketLib, OriginURL);
+var relay = RelayServer("serverName", "serviceToken", nodeWebSocketLib, "OriginURL");
 ```
 
 #### nodeWebSocketLib
