@@ -6,7 +6,7 @@ onload = async function(){ // relay.subscribeがpromiseなので、async functio
 	// チャンネルをサブスクライブする(Promiseなので await注意)
 	channel = await relay.subscribe("example1Channel");
 	
-	messageDiv.innerText = "connected : achex";
+	messageDiv.innerText = "connected : chirimentest";
 	
 	// メッセージを受信したときに起動する関数を登録
 	channel.onmessage = getMessage;
