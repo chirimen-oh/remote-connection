@@ -16,7 +16,9 @@
   
 
 ## ライブラリ
-- [ライブラリ (RelayServer.js) はこちら](js/RelayServer.js)
+- [ライブラリ本体 (RelayServer.js) はこちら](js/beta/RelayServer.js) (ES Module版)
+- [ラッパーモジュールはこちら](js/beta/RelayServerGlobal.js) (メインのスクリプトがESModuleでないWebAppで使用)
+
 
 ## 構成
 
@@ -31,9 +33,9 @@
 - 簡易な学習・プロトタイピングを主眼とするため、セキュリティに関する特別な考慮は行っていない
 
 -----
-## 使用方法
+## 使用方法（メインのスクリプトがESModuleでないWebAppの場合）
 
-#### ライブラリを読み込む
+#### ラッパーモジュールをhtmlのscript要素で読み込む
 ```html
 <script type="module" src="https://chirimen.org/remote-connection/js/beta/RelayServerGlobal.js"></script>
 ````
@@ -41,6 +43,7 @@
 *Note: scaledrone を使用するときには追加のライブラリ読み込みが必要です (後述)*
 
 #### 初期化 Step1: リレーサービスインスタンスを取得する
+
 ```javascript
 var relay = RelayServer("chirimentest", "chirimenSocket"); 
 ```
@@ -91,8 +94,9 @@ channel.send({temperature:24, humidity:60});
 ```
 
 ----
-## ESModuleとしてwebAppで使用する場合。
+## メインのスクリプトがESModuleのwebAppで使用する場合
 
+メインのESModuleのコードの中で、ライブラリ本体を直接インポートします。
 ```
 import {RelayServer} from "https://chirimen.org/remote-connection/js/beta/RelayServer.js";
 ```
