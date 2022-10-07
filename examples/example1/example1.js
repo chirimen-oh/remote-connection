@@ -1,7 +1,7 @@
 var channel;
 onload = async function(){ // relay.subscribeがpromiseなので、async functionで実行する
 	// まずRelayServierオブジェクトをつくる
-	var relay = RelayServer("achex", "chirimenRelay" );
+	var relay = RelayServer("chirimentest", "chirimenRelay" );
 	
 	// チャンネルをサブスクライブする(Promiseなので await注意)
 	channel = await relay.subscribe("example1Channel");
