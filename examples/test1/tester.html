@@ -4,8 +4,8 @@
 </head>
 <script>
 var devicePath="chirimenRemote.html";
-var svcName="achex";
-var svcToken = "chirimenRemoteTestToken"; // achexだけは適当でOKです
+var svcName="chirimentest";
+var svcToken = "chirimenRemoteTestToken"; // achexとchirimentestは適当でOKです
 var ifs;
 onload=function(){
 	ifs=document.getElementsByTagName("iframe");
@@ -32,14 +32,16 @@ function changeService(event){
 <div>
 <h3>CHIRIMEN RelayServer.js Tester</h3>
 pub/sub services: <select onchange="changeService(event)">
-<option value="achex" selected>achex</option>
+<option value="chirimentest" selected>chirimentest</option>
+<option value="achex">achex</option>
 <option value="websocketin">websocketin</option>
 <option value="scaledrone">scaledrone</option>
 </select><br>
 Tokens for Services:<br>
-achex:<input name="achexTokenI" id="achexTokenI" placeholder="input achex Token" type="text" value="chirimenRemoteTestToken"></input>, 
-websocketin:<input name="websocketinTokenI" id="websocketinTokenI" placeholder="input websocketin Token" type="text"></input>, 
-scaledrone:<input name="scaledroneTokenI" id="scaledroneTokenI" placeholder="input scaledrone Token" type="text"></input>
+<li>chirimentest:<input name="chirimentestTokenI" id="chirimentestTokenI" placeholder="input chirimentest Token" type="text" value="chirimenRemoteTestToken"></input>, 
+<li>achex:<input name="achexTokenI" id="achexTokenI" placeholder="input achex Token" type="text" value="chirimenRemoteTestToken"></input>, 
+<li>websocketin:<input name="websocketinTokenI" id="websocketinTokenI" placeholder="input websocketin Token" type="text"></input>, 
+<li>scaledrone:<input name="scaledroneTokenI" id="scaledroneTokenI" placeholder="input scaledrone Token" type="text"></input>
 <hr>
 <h3>device1<h3>
 <iframe width="500" src=""></iframe>
