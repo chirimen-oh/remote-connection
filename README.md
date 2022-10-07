@@ -35,18 +35,18 @@
 
 #### ライブラリを読み込む
 ```html
-<script src="https://chirimen.org/remote-connection/js/RelayServer.js"></script>
+<script type="module" src="https://chirimen.org/remote-connection/js/beta/RelayServerGlobal.js"></script>
 ````
 
 *Note: scaledrone を使用するときには追加のライブラリ読み込みが必要です (後述)*
 
 #### 初期化 Step1: リレーサービスインスタンスを取得する
 ```javascript
-var relay = RelayServer("achex", "chirimenSocket"); 
+var relay = RelayServer("chirimentest", "chirimenSocket"); 
 ```
 
-**`achex` は利用したいサービス名、`chirimenSocket` はそのサービスを利用するためのトークン (Achex の場合は任意文字列) です。**
-ここでは Achex を利用する場合を例に挙げます (他のサービスでの利用については後述)。
+**`chirimentest` は利用したいサービス名、`chirimenSocket` はそのサービスを利用するためのトークン (chirimentest の場合は任意文字列) です。**
+ここでは chirimentest(CHIRIMENのテスト用WebSocketサービス) を利用する場合を例に挙げます (他のサービスでの利用については後述)。
 先の図で示したように、トークンごとに別のスペース (メッセージ中継を行うグループ) が作られ、同一トークンに接続したクライアント間で通信が可能になります。
 
 #### 初期化 Step2: チャンネルを取得する
@@ -90,10 +90,32 @@ channel.send("Hello Remote Device");
 channel.send({temperature:24, humidity:60});
 ```
 
+----
+## ESModuleとしてwebAppで使用する場合。
+
+```
+import {RelayServer} from "https://chirimen.org/remote-connection/js/beta/RelayServer.js";
+```
+
 -----
 ## Node.jsで使用する場合
 
+### ライブラリの場所：
+
+https://chirimen.org/remote-connection/js/beta/RelayServer.js
+
+
+### 読み込み方法
+
+ESModuleとして読み込みます。
+```
+{
+    "type": "module"
+}
+```
+
 ライブラリの読み込みと、RelayServerインスタンス生成のためのパラメータに違いがあります。
+
 
 ```javascript
 import nodeWebSocketLib from "websocket"; // https://www.npmjs.com/package/websocket
@@ -123,9 +145,11 @@ var relay = RelayServer("serverName", "serviceToken");
 #### serverName
 
 `RelayServer` の第一引数 `serverName` には以下のいずれかの文字列を指定してください:
-- ```achex``` ： [Achex](https://achex.ca/) の Legacy Server を利用します。
+- ```achex``` ： [Achex](https://achex.ca/) <!--の Legacy Server--> を利用します。
 - ```piesocket``` ： [piesocket](https://www.piesocket.com/)を使います。
 - ```scaledrone``` ： [scaledrone](https://www.scaledrone.com/)を使います。
+- ```chirimentest``` ： CHIRIMENのテスト用簡易webSocketサービスを利用します。 
+- ```wss://ホストのドメイン名``` ： CHIRIMENのテスト用簡易webSocketサービス互換のサーバを利用します。 
 <!-- - ```websocket.in``` もしくは ```websocketin``` ： [WebSocket.IN](https://www.websocket.in/)を使います。-->
 
 #### serviceToken
@@ -134,18 +158,33 @@ var relay = RelayServer("serverName", "serviceToken");
 
 ### Achex <!--(Legacy Server)-->
 
-Achex <!--(Legacy Server)--> の使い方は上記の例の通りです。
+```javascript
+var relay = RelayServer("achex", "chirimenSocket"); 
+```
+`serverName` は　`achex`　、`serviceToken` は任意文字列が使用できます。
 
 Achex <!--(Legacy Server)--> では接続するユーザの認証を行っておらず、トークンとしては任意の文字列を指定できます。サービスへのアカウント登録手続きやトークンの発行手続きなどが不要であり事前準備なく容易に利用できる反面、ユーザの認証を行わないため、同じチャンネル名を指定すると人は誰でも何処からでもメッセージの送受信が出来てしまいます (第三者が送受信できては困る場合には使えない)。ただしプロトコルはwss( WebSocket Secure (WSS) : TLSを用いた暗号通信)
 
+### chirimentest , wss://ホストのドメイン名
+
+chirimentestの使い方は上記の例の通りです。
+
+このサービスはCHIRIMEN用に用意された、webSocketの簡易リレーサービスソフトウェア：　[CHIRIMEN WebSocketサービス](https://github.com/chirimen-oh/chirimen-web-socket-relay) を chrimen-web-socket-relay.herokuapp.com にデプロイしたものです。
+
+同じWebSocketサービスのコードを使ってサービスを自分で用意した場合、 `serverName` に　`wss://ホストのドメイン名` と記述すると、そのサービスを使用することができます。
+
+chirimentestもAchexと同様に認証を行っておらず、トークンとしては任意の文字列を指定できます。サービスへのアカウント登録手続きやトークンの発行手続きなどが不要であり事前準備なく容易に利用できる反面、ユーザの認証を行わないため、同じチャンネル名を指定すると人は誰でも何処からでもメッセージの送受信が出来てしまいます (第三者が送受信できては困る場合には使えない)。ただしプロトコルはwss( WebSocket Secure (WSS) : TLSを用いた暗号通信)
+
 <!-- ### WebSocket.IN -->
 ### piesocket
+
+** piesocketは無料アカウントの提供が終了してしまいました。使用するには課金が必要です**
 
 piesocket では、RelayServer.js における `ServiceToken` のことを、「API Key」と呼んでいます。
 
 アカウントを作成し、API Key を取得してください:
 
-- [piesocket](https://www.piesocket.com/) で、無料アカウントを作成します
+- [piesocket](https://www.piesocket.com/) で、<!--無料-->アカウントを作成します
 - [piesocket のAPI Keys](https://www.piesocket.com/app/api)で、API Key を作ります。
   - `Enter Key Name` に任意の名前を指定してください。これは複数の API Key を区別できるよう付ける名前であり、コードや動作には関係ありません。指定せず空白にすることも、後で変更することも可能です。
   - `Enter Key Name` はNew Yorkを選択します。
