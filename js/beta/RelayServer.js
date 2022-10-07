@@ -47,6 +47,7 @@ History
              relay = RelayServer("achex", "chirimenSocket" , WSLib, "https://chirimen.org");
 2021/09/02 : websocketin->piesocket
 2021/10/18 : piesocket : RelayServer("[ClusterID].piesocket","[TOKEN]")
+2022/10/07 : add tinyWssModule for https://github.com/chirimen-oh/chirimen-web-socket-relay and its heroku deployment (chirimentiny)
 ================================================================================
 WebIDL:
 
@@ -94,14 +95,18 @@ function RelayServer(serviceName, serviceToken, nodeWebSocketLib, OriginURL){
 //		"websocket.in" : websocketInModule,
 //		websocketin : websocketInModule,
 		piesocket : piesocketModule,
-		scaledrone: scaledroneModule
+		scaledrone: scaledroneModule,
+		wss: tinyWssModule,
+		chirimentest: chirimenTest
 	}
 	var relayService;
 	if ( typeof(serviceName)=="string"){
-		if ( serviceName.indexOf(".")>0){
+		if ( serviceName.indexOf("wss://")==0){
+			relayService = serviecs["wss"](serviceName);
+		} else if ( serviceName.lastIndexOf(".")>0){
 			var sn = serviceName.toLowerCase();
-			var subSn = sn.substring(0,sn.indexOf("."));
-			sn = sn.substring(sn.indexOf(".")+1);
+			var subSn = sn.substring(0,sn.lastIndexOf("."));
+			sn = sn.substring(sn.lastIndexOf(".")+1);
 			relayService = serviecs[sn](subSn);
 		} else {
 			relayService = serviecs[(serviceName.toLowerCase())]();
@@ -113,13 +118,70 @@ function RelayServer(serviceName, serviceToken, nodeWebSocketLib, OriginURL){
 	
 	var defaultChannelName = "chirimenChannel";
 	
+	function chirimenTest(){
+		var wssRelayHost = "wss://chrimen-web-socket-relay.herokuapp.com";
+		return ( tinyWssModule(wssRelayHost) );
+	}
+	
+	function tinyWssModule(wssRelayHost ){
+		
+		function openWSS(wssUrl){
+			var socket = new WebSocket(wssUrl);
+			return  new Promise( function(okCallback, ngCallback){
+				socket.addEventListener('open', function ( event ){
+					okCallback(socket)});
+			});
+		}
+		
+		async function subscribe(channelName){
+			if (!channelName){channelName=defaultChannelName}
+			var socket = await openWSS(wssRelayHost + "/" + serviceToken + "/" + channelName);
+			console.log("tinyWssModule:channelOpened");
+			if ( wssRelayHost.indexOf("herokuapp.com")>0){ // Herokuでは55秒ルールでチャンネルが切れるため・・・
+				setTimeout(ping, 45 * 1000);
+			}
+			function onmessage(cbFunc){
+				socket.addEventListener('message', function(event){
+//					console.log('message',event);
+					var json = JSON.parse(event.data);
+					cbFunc( {
+						data:json.body,
+						timeStamp:event.timeStamp,
+						origin:event.origin,
+//						lastEventId: event.lastEventId  
+					} );
+				});
+			}
+			function send(msg){
+//				console.log("sendMsg:",msg,"  typeof(msg)",typeof(msg));
+				var outMsg={body:msg};
+				outMsg = JSON.stringify(outMsg);
+//				console.log("sendMsg:",outMsg);
+				socket.send(outMsg);
+			}
+			function ping() { // Herokuでのコネクション維持用ヌルメッセージ
+				socket.send("");
+				setTimeout(ping, 45 * 1000);
+			}
+			return {
+				serverName:wssRelayHost,
+				set onmessage(cbf){onmessage(cbf)},
+				send:send
+			}
+		}
+		return {
+			subscribe:subscribe,
+		}
+	}
+	
 	function piesocketModule(ClusterID){
 		var socket;
 		if ( !ClusterID){
-			ClusterID = "free3";
+			ClusterID = "demo";
 		}
 		function open(channelName){
-			var channelNumber = crc16(channelName);
+//			var channelNumber = crc16(channelName);
+			var channelNumber = (channelName);
 			socket = new WebSocket('wss://' + ClusterID + '.piesocket.com/v3/' + channelNumber + '?apiKey=' + serviceToken);
 			return  new Promise( function(okCallback, ngCallback){
 				socket.addEventListener('open', function ( event ){
