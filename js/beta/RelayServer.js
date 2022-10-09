@@ -119,7 +119,7 @@ function RelayServer(serviceName, serviceToken, nodeWebSocketLib, OriginURL){
 	var defaultChannelName = "chirimenChannel";
 	
 	function chirimenTest(){
-		var wssRelayHost = "wss://chrimen-web-socket-relay.herokuapp.com";
+		var wssRelayHost = "wss://chirimen-web-socket-relay.herokuapp.com";
 		return ( tinyWssModule(wssRelayHost) );
 	}
 	
