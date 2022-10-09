@@ -171,7 +171,12 @@ Achex <!--(Legacy Server)--> では接続するユーザの認証を行ってお
 
 ### chirimentest , wss://ホストのドメイン名
 
-chirimentestの使い方は上記の例の通りです。
+```javascript
+var relay = RelayServer("chirimentest", "chirimenSocket"); 
+```
+
+chirimentestの使い方は先述の例の通りです。
+`serverName` は　`chirimentest`　、`serviceToken` は任意文字列が使用できます。
 
 このサービスはCHIRIMEN用に用意された、webSocketの簡易リレーサービスソフトウェア：　[CHIRIMEN WebSocketサービス](https://github.com/chirimen-oh/chirimen-web-socket-relay) を chirimen-web-socket-relay.herokuapp.com にデプロイしたものです。
 
