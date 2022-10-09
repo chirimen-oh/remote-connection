@@ -178,7 +178,7 @@ var relay = RelayServer("chirimentest", "chirimenSocket");
 chirimentestの使い方は先述の例の通りです。
 `serverName` は　`chirimentest`　、`serviceToken` は任意文字列が使用できます。
 
-このサービスはCHIRIMEN用に用意された、webSocketの簡易リレーサービスソフトウェア：　[CHIRIMEN WebSocketサービス](https://github.com/chirimen-oh/chirimen-web-socket-relay) を chirimen-web-socket-relay.herokuapp.com にデプロイしたものです。
+このサービスはCHIRIMEN用に用意された、webSocketの簡易リレーサービスソフトウェア：　[chirimen-web-socket-relay](https://github.com/chirimen-oh/chirimen-web-socket-relay) を chirimen-web-socket-relay.herokuapp.com にデプロイしたものです。
 
 同じWebSocketサービスのコードを使ってサービスを自分で用意した場合、 `serverName` に　`wss://ホストのドメイン名` と記述すると、そのサービスを使用することもできます。
 
