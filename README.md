@@ -137,7 +137,7 @@ node.jsのソフトウェアはウェブアプリと異なりコンテンツ(ウ
 -----
 ## サービスごとの利用方法
 
-RelayServer.js では現在、[Achex (Legacy Server)](https://achex.ca/), [Scaledrone](https://www.scaledrone.com/), [WebSocket.IN](https://www.websocket.in/) に対応しています。いずれのサービスを利用する場合でも同じ API で使えるので、好みやサービスの利用制限などに応じて簡単に切り替えられます。
+RelayServer.js では現在、[Achex (Legacy Server)](https://achex.ca/), [Scaledrone](https://www.scaledrone.com/), [WebSocket.IN](https://www.websocket.in/) , そしてchirimentest(CHIRIMEN用に用意されたテスト用のサービス:後述)に対応しています。いずれのサービスを利用する場合でも同じ API で使えるので、好みやサービスの利用制限などに応じて簡単に切り替えられます。
 
 サービスごとに違いがあるのは、最初の `RelayServer` インスタンスの取得部分のみです。
 ```javascript
@@ -178,9 +178,9 @@ var relay = RelayServer("chirimentest", "chirimenSocket");
 chirimentestの使い方は先述の例の通りです。
 `serverName` は　`chirimentest`　、`serviceToken` は任意文字列が使用できます。
 
-このサービスはCHIRIMEN用に用意された、webSocketの簡易リレーサービスソフトウェア：　[chirimen-web-socket-relay](https://github.com/chirimen-oh/chirimen-web-socket-relay) を chirimen-web-socket-relay.herokuapp.com にデプロイしたものです。
+このサービスはCHIRIMEN用に用意された、webSocketの簡易リレーサービスソフトウェア：　[chirimen-web-socket-relay](https://github.com/chirimen-oh/chirimen-web-socket-relay) を chirimen-web-socket-relay.herokuapp.com にデプロイしたものです。簡単なものですがリレーサービスのソフトウェアもオープンソースです。
 
-同じWebSocketサービスのコードを使ってサービスを自分で用意した場合、 `serverName` に　`wss://ホストのドメイン名` と記述すると、そのサービスを使用することもできます。
+このWebSocketサービスのコードを使ってサービスを自分で用意した場合、 `serverName` に　`wss://ホストのドメイン名` と記述すると、そのサービスを使用することもできます。
 
 chirimentestもAchexと同様に認証を行っておらず、トークンとしては任意の文字列を指定できます。サービスへのアカウント登録手続きやトークンの発行手続きなどが不要であり事前準備なく容易に利用できる反面、ユーザの認証を行わないため、同じチャンネル名を指定する人は誰でも何処からでもメッセージの送受信が出来てしまいます (第三者が送受信できては困る場合には使えない)。ただしプロトコルはwss( WebSocket Secure (WSS) : TLSを用いた暗号通信)
 
