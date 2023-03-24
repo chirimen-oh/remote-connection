@@ -153,7 +153,7 @@ var relay = RelayServer("serverName", "serviceToken");
 - ```piesocket``` ： [piesocket](https://www.piesocket.com/)を使います。
 - ```scaledrone``` ： [scaledrone](https://www.scaledrone.com/)を使います。
 - ```chirimentest``` ： CHIRIMENのテスト用簡易webSocketサービスを利用します。 
-- ```wss://ホストのドメイン名``` ： CHIRIMENのテスト用簡易webSocketサービス互換のサーバを利用します。 
+- ```wss://ホストのドメイン名``` ： CHIRIMENの[テスト用簡易webSocketサービス互換のサーバ](https://github.com/chirimen-oh/chirimen-web-socket-relay)を利用します。 
 <!-- - ```websocket.in``` もしくは ```websocketin``` ： [WebSocket.IN](https://www.websocket.in/)を使います。-->
 
 #### serviceToken
